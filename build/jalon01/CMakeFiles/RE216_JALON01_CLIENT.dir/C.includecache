@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/src/jalon01/client.c
+stdlib.h
+-
+unistd.h
+-
+stdio.h
+-
+string.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+sys/socket.h
+-
+netdb.h
+-
+netinet/in.h
+-
+errno.h
+-
+fcntl.h
+-
+
