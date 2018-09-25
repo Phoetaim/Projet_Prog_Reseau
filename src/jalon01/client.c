@@ -94,17 +94,15 @@ char* str = malloc(300*sizeof(char));
   //send message to the server
   handle_client_message(s, str);
 
-
-  if (strncmp(str, "\\quit", 5) == 0) {
-    fprintf(stdout, "coucou");
-    break;
-  }
-
   //receive response from the server
-   readline(s, str, 300);
+  char* received = malloc(300*sizeof(char));
+  readline(s, received, 300);
 
    //display the response
-   puts(str);
+   puts(received);
+
+   if (strncmp(str, "\\quit", 5) == 0)
+     break;
 
  }
 

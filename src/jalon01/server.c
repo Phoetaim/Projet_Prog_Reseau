@@ -23,7 +23,7 @@ struct sockaddr_in init_serv_addr(int portnumber) {
  memset(& sock_host, '\0', sizeof(sock_host));
  sock_host.sin_family = AF_INET;
  sock_host.sin_port = htons(portnumber);
- inet_aton("10.7.3.98", & sock_host.sin_addr);
+ inet_aton("127.0.0.1", & sock_host.sin_addr);
  return sock_host;
 }
 
@@ -107,12 +107,12 @@ int main(int argc, char** argv)
 
     //specify the socket to be a server socket and listen for at most 20 concurrent client
     do_listen(s, 20);
-
+    struct sockaddr_in client;
+    
     for (;;)
     {
 
         //accept connection from client
-        struct sockaddr_in client;
         int l = do_accept(s, client);
         fprintf(stdout, "%d", l);
 
@@ -120,14 +120,17 @@ int main(int argc, char** argv)
         char* tmp = malloc(300*sizeof(char));
         do_read(l, tmp);
 
+        //we write back to the client
+
+
         if (strncmp(tmp, "\\quit", 5) == 0) {
-          fprintf(stdout, "coucou");
+          if (strncmp(tmp, "\\quit ", 6) == 0)
+            do_write(l, (tmp+5*sizeof(char)));
           close(l);
         }
-        //we write back to the client
-        do_write(l, tmp);
-
-
+        else {
+          do_write(l, tmp);
+        }
         //clean up client socket
     }
 
