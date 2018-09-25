@@ -108,34 +108,40 @@ int main(int argc, char** argv)
     //specify the socket to be a server socket and listen for at most 20 concurrent client
     do_listen(s, 20);
     struct sockaddr_in client;
-    
+
+    char* tmp;
+
     for (;;)
     {
 
         //accept connection from client
         int l = do_accept(s, client);
-        fprintf(stdout, "%d", l);
 
         //read what the client has to say
-        char* tmp = malloc(300*sizeof(char));
+        tmp = malloc(300*sizeof(char));
         do_read(l, tmp);
 
-        //we write back to the client
-
-
+        //check if \quit
         if (strncmp(tmp, "\\quit", 5) == 0) {
-          if (strncmp(tmp, "\\quit ", 6) == 0)
-            do_write(l, (tmp+5*sizeof(char)));
-          close(l);
+          if (strncmp(tmp, "\\quit ", 6) == 0) {
+              do_write(l, (tmp+6*sizeof(char)));
+            } else {
+              do_write(l, tmp);
+            }
+            close(l);
         }
         else {
+          //we write back to the client
           do_write(l, tmp);
+
+          //clean up client socket
+          close(l);
         }
-        //clean up client socket
     }
 
     //clean up server socket
     close(s);
+    free(tmp);
 
     return 0;
 }

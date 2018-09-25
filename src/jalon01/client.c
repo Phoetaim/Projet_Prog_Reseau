@@ -78,35 +78,47 @@ int main(int argc,char** argv)
 //get address info from the server
 struct sockaddr_in address  = get_addr_info(argv[1], atoi(argv[2]));
 
+int s;
+char* str;
+char* received;
 
-//get the socket
-int s = do_socket();
+for (;;) {
 
-//connect to remote socket
-do_connect(s, address);
+  //get the socket
+  s = do_socket();
 
-char* str = malloc(300*sizeof(char));
- for (;;) {
+  //connect to remote socket
+  do_connect(s, address);
+
+  str = malloc(300*sizeof(char));
+
   //get user input$
-
   fgets(str, 300*sizeof(char), stdin);
 
   //send message to the server
   handle_client_message(s, str);
 
   //receive response from the server
-  char* received = malloc(300*sizeof(char));
+  received = malloc(300*sizeof(char));
   readline(s, received, 300);
+
+  // close the connection if \quit
+  if (strncmp(str, "\\quit", 5) == 0) {
+    if (strncmp(str, "\\quit ", 6) == 0) {
+      puts(received);
+    }
+    close(s);
+    free(str);
+    break;
+  }
 
    //display the response
    puts(received);
 
-   if (strncmp(str, "\\quit", 5) == 0)
-     break;
+   //close the socket
+   close(s);
+  }
 
- }
-
- close(s);
  return 0;
 
 
