@@ -20,10 +20,11 @@ void error(const char *msg)
 //FUNCTIONS
 struct sockaddr_in init_serv_addr(int portnumber) {
  struct sockaddr_in sock_host;
- memset(& sock_host, '\0', sizeof(sock_host));
+ //memset(& sock_host, '\0', sizeof(sock_host));
  sock_host.sin_family = AF_INET;
  sock_host.sin_port = htons(portnumber);
- inet_aton("127.0.0.1", & sock_host.sin_addr);
+ sock_host.sin_addr.s_addr = htonl(INADDR_ANY);
+ //inet_aton("127.0.0.1", & sock_host.sin_addr);
  return sock_host;
 }
 
