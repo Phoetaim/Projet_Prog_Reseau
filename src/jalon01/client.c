@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -35,8 +36,9 @@ int do_socket(){
 
 void do_connect(int sock, struct sockaddr_in address){
   int connexion = connect(sock, (struct sockaddr *) & address, sizeof(address));
-  if(connexion == -1)
+  if(connexion == -1) {
     perror("do_connect is wrong");
+  }
 }
 
 void readline(int fd, char * str, size_t maxlen) {
@@ -75,14 +77,12 @@ int main(int argc,char** argv)
         return 1;
     }
 
-//get address info from the server
-struct sockaddr_in address  = get_addr_info(argv[1], atoi(argv[2]));
+  //get address info from the server
+  struct sockaddr_in address  = get_addr_info(argv[1], atoi(argv[2]));
 
-int s;
-char* str;
-char* received;
-
-for (;;) {
+  int s;
+  char* str;
+  char* received;
 
   //get the socket
   s = do_socket();
@@ -90,34 +90,48 @@ for (;;) {
   //connect to remote socket
   do_connect(s, address);
 
-  str = malloc(300*sizeof(char));
-
-  //get user input$
-  fgets(str, 300*sizeof(char), stdin);
-
-  //send message to the server
-  handle_client_message(s, str);
-
-  //receive response from the server
   received = malloc(300*sizeof(char));
   readline(s, received, 300);
-
-  // close the connection if \quit
-  if (strncmp(str, "\\quit", 5) == 0) {
-    if (strncmp(str, "\\quit ", 6) == 0) {
-      puts(received);
-    }
+  if (strcmp(received, "1") == 0) {
+    puts("Succesfully connected !");
+  }
+  else if (strcmp(received, "2") == 0) {
+    puts("Server cannot accept incoming connections anymore. Try again later");
     close(s);
-    free(str);
-    break;
+    exit(0);
   }
 
-   //display the response
+  str = malloc(300*sizeof(char));
+
+  while(1) {
+
+    //get user input$
+    fgets(str, 300*sizeof(char), stdin);
+
+    //send message to the server
+    handle_client_message(s, str);
+
+    //receive response from the server
+    received = malloc(300*sizeof(char));
+    readline(s, received, 300);
+
+    // close the connection if \quit
+    if (strncmp(str, "/quit", 5) == 0) {
+      puts(received);
+      close(s);
+      puts("Connection terminated");
+      free(str);
+      break;
+    }
+
+  //display the response
    puts(received);
 
-   //close the socket
-   close(s);
-  }
+   }
+
+ //close the socket
+ close(s);
+
 
  return 0;
 
