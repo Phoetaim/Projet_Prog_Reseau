@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <arpa/inet.h>
 
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
@@ -78,7 +79,7 @@ int main(int argc,char** argv)
 
 
     if (argc != 3) {
-        fprintf(stderr,"usage: RE216_CLIENT hostname port\n");
+        fprintf(stderr,"usage: ./CLIENT hostname port\n");
         return 1;
     }
 
@@ -102,6 +103,7 @@ int main(int argc,char** argv)
     // check is the connection is made
     if (strcmp(received, "1") == 0) {
         puts("[Server] : Succesfully connected !");
+        puts("[Server] : Please login with /nick <pseudo>");
     }
     if (strcmp(received, "2") == 0) {
         puts("Server cannot accept incoming connections anymore. Try again later.");
