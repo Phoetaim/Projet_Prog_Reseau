@@ -33,7 +33,7 @@ struct sockaddr_in get_addr_info(char* hostname, int portnumber) {
 int do_socket(){
   int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if (sock == -1)
-    perror("do_socket is wrong");
+  perror("do_socket is wrong");
   return sock;
 }
 
@@ -49,7 +49,7 @@ void do_connect(int sock, struct sockaddr_in address){
 void readline(int fd, char * str, size_t maxlen) {
   ssize_t count = read(fd, str, maxlen);
   if(count == -1)
-    perror("readline is wrong");
+  perror("readline is wrong");
   while (count < maxlen) {
     count += read(fd, str, maxlen-count);
   }
@@ -59,7 +59,7 @@ void readline(int fd, char * str, size_t maxlen) {
 void sendline(int fd, char * str, size_t maxlen) {
   ssize_t count = write(fd, str, maxlen);
   if(count == -1)
-    perror("sendline is wrong");
+  perror("sendline is wrong");
   while (count < maxlen) {
     count += write(fd, str, maxlen-count);
   }
@@ -78,67 +78,67 @@ int main(int argc,char** argv)
 {
 
 
-    if (argc != 3) {
-        fprintf(stderr,"usage: ./CLIENT hostname port\n");
-        return 1;
-    }
+  if (argc != 3) {
+    fprintf(stderr,"usage: ./CLIENT hostname port\n");
+    return 1;
+  }
 
-    //get address info from the server
-    struct sockaddr_in address  = get_addr_info(argv[1], atoi(argv[2]));
+  //get address info from the server
+  struct sockaddr_in address  = get_addr_info(argv[1], atoi(argv[2]));
 
-    int s;
-    char* str;
-    char* received;
+  int s;
+  char* str;
+  char* received;
 
-    //get the socket
-    s = do_socket();
+  //get the socket
+  s = do_socket();
 
-    //connect to remote socket
-    do_connect(s, address);
+  //connect to remote socket
+  do_connect(s, address);
 
-    str = malloc(300*sizeof(char));
+  str = malloc(300*sizeof(char));
+  received = malloc(300*sizeof(char));
+  readline(s, received, 300);
+
+  // check is the connection is made
+  if (strcmp(received, "1") == 0) {
+    puts("[Server] : Succesfully connected !");
+    puts("[Server] : Please login with /nick <pseudo>");
+  }
+  if (strcmp(received, "2") == 0) {
+    puts("Server cannot accept incoming connections anymore. Try again later.");
+    exit(0);
+  }
+
+
+  while(1) {
+
+    //get user input$
+    fgets(str, 300*sizeof(char), stdin);
+
+    //send message to the server
+    handle_client_message(s, str);
+
+    //receive response from the server
     received = malloc(300*sizeof(char));
     readline(s, received, 300);
 
-    // check is the connection is made
-    if (strcmp(received, "1") == 0) {
-        puts("[Server] : Succesfully connected !");
-        puts("[Server] : Please login with /nick <pseudo>");
-    }
-    if (strcmp(received, "2") == 0) {
-        puts("Server cannot accept incoming connections anymore. Try again later.");
-        exit(0);
-    }
-
-
-    while(1) {
-
-        //get user input$
-        fgets(str, 300*sizeof(char), stdin);
-
-        //send message to the server
-        handle_client_message(s, str);
-
-        //receive response from the server
-        received = malloc(300*sizeof(char));
-        readline(s, received, 300);
-
-        // close the connection if \quit
-        if (strncmp(str, "/quit", 5) == 0) {
-            puts(received);
-            close(s);
-            puts("Connection terminated");
-            free(str);
-            break;
-        }
-
-        //display the response
-        puts(received);
-
+    // close the connection if \quit
+    if (strncmp(str, "/quit", 5) == 0) {
+      puts(received);
+      close(s);
+      puts("Connection terminated");
+      free(str);
+      break;
     }
 
-    //close the socket
-    close(s);
+    //display the response
+    puts(received);
 
-    return 0;
+  }
+
+  //close the socket
+  close(s);
+
+  return 0;
 }

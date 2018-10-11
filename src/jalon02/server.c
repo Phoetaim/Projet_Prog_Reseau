@@ -24,16 +24,16 @@ struct list_clients {
   time_t time_co;
   int socket_number;
   struct list_clients * next;
-};
+}; //List of the clients
 
 struct f_clients {
   pthread_t thread_client [20];
-};
+};//List  of the threads
 
 struct args {
   struct list_clients * list;
   int l;
-};
+}; //Structure of arguments for the threads
 
 //FUNCTIONS
 
@@ -123,13 +123,13 @@ struct list_clients * add_client (struct list_clients * list_client, int l, stru
     clients_connected->socket_number = l;
     clients_connected->pseudo = NULL;
     return clients_connected;
-  }
+  } //if(list_client == NULL)
   else {
     struct list_clients* temp = list_client;
     struct list_clients* next = malloc(sizeof(struct list_clients));
-    while (temp->next != NULL){
+    while (temp->next != NULL)
       temp = temp->next;
-    }
+
     next->ip_address = inet_ntoa(client.sin_addr);
     next->port_number = client.sin_port;
     next->time_co = time(NULL);
@@ -139,7 +139,7 @@ struct list_clients * add_client (struct list_clients * list_client, int l, stru
     temp->next = next;
 
     return list_client;
-  }
+  }//else
 }
 
 int suppr_client (struct list_clients * clients_connected, int l) {
@@ -170,7 +170,7 @@ int suppr_client (struct list_clients * clients_connected, int l) {
       free(element);
       return 1;
     }
-  }
+  }//if (clients_connected->socket_number == l)
 
   while(temp != NULL && temp->socket_number != l) {
     element = temp;
@@ -196,39 +196,39 @@ void * fn_client (void* ss) {
 
   struct args * tempo= malloc(sizeof(struct args));
   tempo = (struct args *) ss;
+
   struct list_clients * clients_connected = tempo->list;
   int l =  tempo->l;
+
   char* serv = malloc(300*sizeof(char));
   char* tmp = malloc(300*sizeof(char));
   do_read(l, tmp);
 
   while (strncmp(tmp, "/nick ", 6) != 0) {
-    do_write(l, "[Server] : Please login with /nick <pseudo>");
-    do_read(l, tmp);
     if (strncmp(tmp, "/quit", 5) == 0) {
       if (strncmp(tmp, "/quit ", 6) == 0) {
-        serv = malloc(300*sizeof(char));
         strcpy(serv, "[Server] : You will be terminated -> ");
         strcat(serv, tmp+6*sizeof(char));
         do_write(l, serv);
-        free(serv);
       } else {
         do_write(l, "[Server] : You will be terminated");
       }
       close(l);
-      printf("ee");
-      fflush(stdout);
+
       //give the number of connections
       NB_CLIENTS --;
       fprintf(stdout, "%d client(s) connected\n", NB_CLIENTS);
       fflush(stdout);
+      free(serv);
+      free(tmp);
       pthread_exit(NULL);
     }
+    do_write(l, "[Server] : Please login with /nick <pseudo>");
+    do_read(l, tmp);
   }
   strcpy(serv, "[Server] : Welcome on the chat ");
   strcat(serv, tmp+6*sizeof(char));
   do_write(l, serv);
-  free(serv);
   clients_connected->pseudo = tmp+6*sizeof(char);
 
   while(1) {
@@ -239,11 +239,9 @@ void * fn_client (void* ss) {
     //check if /quit
     if (strncmp(tmp, "/quit", 5) == 0) {
       if (strncmp(tmp, "/quit ", 6) == 0) {
-        serv = malloc(300*sizeof(char));
         strcpy(serv, "[Server] : You will be terminated -> ");
         strcat(serv, tmp+6*sizeof(char));
         do_write(l, serv);
-        free(serv);
       } else
       do_write(l, "[Server] : You will be terminated");
       close(l);
@@ -256,22 +254,18 @@ void * fn_client (void* ss) {
     }
 
     else if(strncmp(tmp, "/nick ", 6) == 0) {
-      serv = malloc(300*sizeof(char));
       strcpy(serv, "[Server] : Your new pseudo is ");
       strcat(serv, tmp+6*sizeof(char));
       do_write(l, serv);
-      free(serv);
     } else {
-      serv = malloc(300*sizeof(char));
       //we write back to the client
       strcpy(serv, "[Server] : ");
       strcat(serv, tmp);
       do_write(l, serv);
-      free(serv);
     }
   }
   free(tmp);
-
+  free(serv);
   //exit the thread
   pthread_exit(NULL);
 }
@@ -280,8 +274,7 @@ void * fn_client (void* ss) {
 /* ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------- */
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 
   if (argc != 2){
     fprintf(stderr, "usage: ./SERVER port\n");
@@ -294,6 +287,11 @@ int main(int argc, char** argv)
 
   //init the serv_add structure
   struct sockaddr_in address = init_serv_addr(atoi(argv[1]));
+  struct list_clients * clients_connected = malloc(sizeof(struct list_clients));
+  clients_connected = NULL;
+  struct sockaddr_in client;
+  struct f_clients *ff = malloc(20*sizeof(struct f_clients));
+  int l = 0;
 
   //perform the binding
   do_bind(s, address);
@@ -302,12 +300,6 @@ int main(int argc, char** argv)
   do_listen(s, 20);
   NB_CLIENTS = 0;
   puts("Waiting for connections...");
-
-  struct list_clients * clients_connected = malloc(sizeof(struct list_clients));
-  clients_connected = NULL;
-  struct sockaddr_in client;
-  struct f_clients *ff = malloc(20*sizeof(struct f_clients));
-  int l;
 
   while(1) {
 
@@ -334,8 +326,9 @@ int main(int argc, char** argv)
     fprintf(stdout, "%d client(s) connected\n", NB_CLIENTS);
     fflush(stdout);
   }
-  free(ff);
 
+  free(ff);
+  free(clients_connected);
   //clean up server socket
   close(s);
 
