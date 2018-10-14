@@ -2,8 +2,7 @@
 <projectDescription>
 	<name>RE216-Debug@build</name>
 	<comment></comment>
-	<projects>
-	</projects>
+	<projects></projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.cdt.make.core.makeBuilder</name>
@@ -31,7 +30,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.command</key>
-					<value>/usr/bin/gmake</value>
+					<value>/usr/bin/make</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.contents</key>
@@ -47,7 +46,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildLocation</key>
-					<value>/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/build</value>
+					<value>/home/phoetaim/Documents/Projets/Projet_reseau/build</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
@@ -83,7 +82,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.location</key>
-					<value>/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/build</value>
+					<value>/home/phoetaim/Documents/Projets/Projet_reseau/build</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
@@ -97,21 +96,20 @@
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.cdt.make.core.ScannerConfigBuilder</name>
-			<arguments>
-			</arguments>
+			<arguments/>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.make.core.makeNature</nature>
 		<nature>org.eclipse.cdt.make.core.ScannerConfigNature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.core.cnature</nature>
 	</natures>
 	<linkedResources>
 		<link>
 			<name>[Source directory]</name>
 			<type>2</type>
-			<location>/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/src</location>
+			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src</location>
 		</link>
 		<link>
 			<name>[Subprojects]</name>
@@ -121,12 +119,12 @@
 		<link>
 			<name>[Subprojects]/RE216</name>
 			<type>2</type>
-			<location>/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/src</location>
+			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src</location>
 		</link>
 		<link>
-			<name>[Subprojects]/RE216_JALON01</name>
+			<name>[Subprojects]/RE216_JALON03</name>
 			<type>2</type>
-			<location>/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/src/jalon01</location>
+			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src/jalon03</location>
 		</link>
 		<link>
 			<name>[Targets]</name>
@@ -134,82 +132,97 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT</name>
+			<name>[Targets]/[exe] CLIENT</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT/</name>
+			<name>[Targets]/[exe] CLIENT/</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT/Source Files</name>
+			<name>[Targets]/[exe] CLIENT/Source Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT/Source Files/client.c</name>
+			<name>[Targets]/[exe] CLIENT/Source Files/client.c</name>
 			<type>1</type>
-			<location>/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/src/jalon01/client.c</location>
+			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src/jalon03/client.c</location>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT/Header Files</name>
+			<name>[Targets]/[exe] CLIENT/Header Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT/CMake Rules</name>
+			<name>[Targets]/[exe] CLIENT/CMake Rules</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT/Resources</name>
+			<name>[Targets]/[exe] CLIENT/Resources</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_CLIENT/Object Files</name>
+			<name>[Targets]/[exe] CLIENT/Object Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER</name>
+			<name>[Targets]/[exe] CLIENT/Object Libraries</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER/</name>
+			<name>[Targets]/[exe] SERVER</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER/Source Files</name>
+			<name>[Targets]/[exe] SERVER/</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER/Source Files/server.c</name>
+			<name>[Targets]/[exe] SERVER/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] SERVER/Source Files/list_client.c</name>
 			<type>1</type>
-			<location>/net/t/lmartin027/TRAVAIL/2A/Projet_reseau/src/jalon01/server.c</location>
+			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src/jalon03/list_client.c</location>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER/Header Files</name>
+			<name>[Targets]/[exe] SERVER/Source Files/server.c</name>
+			<type>1</type>
+			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src/jalon03/server.c</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] SERVER/Header Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER/CMake Rules</name>
+			<name>[Targets]/[exe] SERVER/CMake Rules</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER/Resources</name>
+			<name>[Targets]/[exe] SERVER/Resources</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] RE216_JALON01_SERVER/Object Files</name>
+			<name>[Targets]/[exe] SERVER/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] SERVER/Object Libraries</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
