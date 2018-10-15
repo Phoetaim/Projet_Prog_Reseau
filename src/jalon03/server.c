@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <arpa/inet.h>
+#include "../../include/socket_functions.h"
 #include "../../include/server.h"
 #include "../../include/list_client.h"
 
@@ -19,61 +20,17 @@ int NB_CLIENTS;
 
 //STRUCTURES
 
+//Structure of arguments
+struct args {
+	struct list_client * list_client;
+	int l;
+};
+
 struct f_clients {
 	pthread_t thread_client [20];
 };//List  of the threads
 
-struct args {
-	struct list_client * list_client;
-	int l;
-}; //Structure of arguments for the threads
-
 //FUNCTIONS
-
-//initialize the server
-struct sockaddr_in init_serv_addr(int portnumber) {
-	struct sockaddr_in sock_host;
-	sock_host.sin_addr.s_addr = htonl(INADDR_ANY);
-	sock_host.sin_family = AF_INET;
-	sock_host.sin_port = htons(portnumber);
-	return sock_host;
-}
-
-//create a socket
-int do_socket() {
-	int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock == -1)
-	perror("do_socket is wrong");
-	return sock;
-}
-
-
-//bind the socket with an address
-void do_bind(int socketnumber, struct sockaddr_in adr) {
-	int b = bind(socketnumber, (struct sockaddr *) & adr, sizeof(adr));
-	if (b == -1)
-	perror("do_bind is wrong");
-}
-
-
-//listen on a socket
-int do_listen(int socketnumber, int lognumber) {
-	int l = listen(socketnumber, lognumber);
-	if (l == -1)
-	perror("do_listen is wrong");
-	return l;
-}
-
-
-//accept a connection
-int do_accept(int socketnumber, struct sockaddr_in client) {
-	int size = sizeof(struct sockaddr_in);
-	int a = accept(socketnumber, (struct sockaddr *)&client, &size);
-	if (a == -1)
-	perror("do_accept is wrong");
-	return a;
-}
-
 
 //read the content of a socket
 void readline(int fd, char * str, size_t maxlen) {
@@ -86,7 +43,7 @@ void readline(int fd, char * str, size_t maxlen) {
 
 //write on a socket
 void sendline(int fd, char * str, size_t maxlen) {
-	ssize_t count = write(fd, str, maxmaexitlen);
+	ssize_t count = write(fd, str, maxlen);
 	if(count == -1)
 	perror("sendline is wrong");
 	while (count < maxlen)
@@ -195,7 +152,6 @@ void * fn_client (void* args) {
 
 	pthread_exit(NULL);
 }
-
 /* ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------- */

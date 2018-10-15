@@ -11,12 +11,13 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
+#include <signal.h>
 
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
 
-
+int s;
 // FUNCTIONS
 
 //get the address information
@@ -70,6 +71,15 @@ void handle_client_message(int sock, char * message) {
   sendline(sock, message, 300);
 }
 
+void sigint_handler(int sig_no){
+  char * str = "/quit";
+  char * received = malloc(300*sizeof(char));
+  handle_client_message(s, str);
+  readline(s, received, 300);
+  puts(received);
+  exit(1);
+}
+
 /* ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------- */
@@ -82,11 +92,14 @@ int main(int argc,char** argv)
     fprintf(stderr,"usage: ./CLIENT hostname port\n");
     return 1;
   }
+  struct sigaction action;
+  memset(&action, 0, sizeof(action));
+  action.sa_handler = &sigint_handler;
+  sigaction(SIGINT, &action, NULL);
 
   //get address info from the server
   struct sockaddr_in address  = get_addr_info(argv[1], atoi(argv[2]));
 
-  int s;
   char* str;
   char* received;
 

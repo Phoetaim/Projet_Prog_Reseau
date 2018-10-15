@@ -192,6 +192,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>[Targets]/[exe] SERVER/Source Files/socket_functions.c</name>
+			<type>1</type>
+			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src/jalon03/socket_functions.c</location>
+		</link>
+		<link>
 			<name>[Targets]/[exe] SERVER/Source Files/list_client.c</name>
 			<type>1</type>
 			<location>/home/phoetaim/Documents/Projets/Projet_reseau/src/jalon03/list_client.c</location>

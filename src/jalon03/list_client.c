@@ -20,6 +20,7 @@ struct list_client * new_list_client(){
 	list_client->head = NULL;
 	return list_client;
 }
+
 void add_client (struct list_client * list_client, int l, struct sockaddr_in client) {
 
 	struct clients * head_client = list_client->head;
@@ -72,6 +73,7 @@ char * who (struct list_client * list_client) {
 	while (head_client != NULL){
 		strcpy(prefix, "\t- ");
 		strcat(prefix, head_client->pseudo);
+		strcat(prefix, "\n");
 		strcat(pseudo_members,prefix);
 		head_client=head_client->next;
 	}
@@ -94,15 +96,7 @@ char * whois (struct list_client * list_client, char * pseudo) {
 		char * time = ctime(&(head_client->time_co));
 		size = strlen(time);
 		strcpy(time + (size-1)*sizeof(char), "\0");
-
-		strcat(info_client,pseudo);
-		strcat(info_client," connected since ");
-		strcat(info_client,time);
-		strcat(info_client," with IP address ");
-		strcat(info_client,head_client->ip_address);
-		strcat(info_client," and port number ");
-		//strcat(info_client,(head_client->port_number-'0'));
-		strcat(info_client,"\n");
+		sprintf(info_client,"%s connected since %s with IP address %s and port number %d\n",pseudo,time,head_client->ip_address,head_client->port_number);
 	}
 	return info_client;
 }
