@@ -86,6 +86,7 @@ void * fn_client (void* args) {
 			close(l);
 			//give the number of connections
 			NB_CLIENTS --;
+			suppr_client(list_client,l);
 			free(serv);
 			free(tmp);
 			fprintf(stdout,"Client %d terminated\n", l);
@@ -116,7 +117,6 @@ void * fn_client (void* args) {
 			} else
 			do_write(l, "[Server] : You will be terminated");
 			close(l);
-
 			//give the number of connections
 			NB_CLIENTS --;
 			fprintf(stdout,"Client %d (%s) terminated\n", l, clients_get_pseudo(client_connected));
@@ -184,9 +184,8 @@ int main(int argc, char** argv) {
 
 	while(1) {
 
-		l = do_accept(s, addr_client);
+		l = do_accept(s, &addr_client);
 		NB_CLIENTS ++;
-
 		//check if the maximal number of connections is reached
 		if (NB_CLIENTS > 20) {
 			puts("Maximal connections reached");

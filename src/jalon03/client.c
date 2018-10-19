@@ -108,7 +108,8 @@ int main(int argc,char** argv)
 
   //connect to remote socket
   do_connect(s, address);
-
+  fprintf(stdout,"%s\n",inet_ntoa(address.sin_addr));
+	fflush(stdout);
   str = malloc(300*sizeof(char));
   received = malloc(300*sizeof(char));
   readline(s, received, 300);

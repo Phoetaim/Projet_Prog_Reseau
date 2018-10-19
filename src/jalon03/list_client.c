@@ -25,12 +25,16 @@ void add_client (struct list_client * list_client, int l, struct sockaddr_in cli
 
 	struct clients * head_client = list_client->head;
 	struct clients * new_client = malloc(sizeof(struct clients));
-	new_client->ip_address = inet_ntoa(client.sin_addr);
+	char * ip_address = inet_ntoa(client.sin_addr);
+	char * pseudo = "Find my pseudo";
+	new_client->ip_address = malloc(sizeof(ip_address));
+	strcpy(new_client->ip_address,ip_address);
 	new_client->port_number = ntohs(client.sin_port) ;
 	new_client->time_co = time(NULL);
 	new_client->next = head_client;
 	new_client->socket_number = l;
 	new_client->pseudo = malloc(20*sizeof(char));
+	strcpy(new_client->pseudo, pseudo);
 	list_client->head = new_client;
 }
 
@@ -96,7 +100,7 @@ char * whois (struct list_client * list_client, char * pseudo) {
 		char * time = ctime(&(head_client->time_co));
 		size = strlen(time);
 		strcpy(time + (size-1)*sizeof(char), "\0");
-		sprintf(info_client,"%s connected since %s with IP address %s and port number %d\n",pseudo,time,head_client->ip_address,head_client->port_number);
+		sprintf(info_client,"%s is connected since %s with IP address %s and port number %d\n", pseudo, time, head_client->ip_address, head_client->port_number);
 	}
 	return info_client;
 }

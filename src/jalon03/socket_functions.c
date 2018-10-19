@@ -50,10 +50,13 @@ int do_listen(int socketnumber, int lognumber) {
 
 
 //accept a connection
-int do_accept(int socketnumber, struct sockaddr_in client) {
+int do_accept(int socketnumber, struct sockaddr_in  * client) {
+	struct sockaddr_in client_tmp = *client;
 	int size = sizeof(struct sockaddr_in);
-	int a = accept(socketnumber, (struct sockaddr *)&client, &size);
+	int a = accept(socketnumber, (struct sockaddr *)&client_tmp, &size);
 	if (a == -1)
 	perror("do_accept is wrong");
+	client->sin_addr = client_tmp.sin_addr;
+	client->sin_port = client_tmp.sin_port;
 	return a;
 }
